@@ -4,51 +4,73 @@ namespace GradeCalculator
 {
 	internal class Program
 	{
+		private static int numberOfClasses;
+		private static int numberOfStudents;
+		private static int numberOfStudentsTotal;
+		
+		private static char classGradeLetter;
+		private static double classGradeTotal;
+		private static double classGradeAverage;
+
+		private static char schoolGradeLetter;
+		private static double schoolGradeTotal;
+		private static double schoolGradeAverage;
+        
 		static void Main(string[] args)
 		{
-			// GPT generated code
 			Console.Write("Enter the number of classes: ");
-			int numClasses = int.Parse(Console.ReadLine());
-
-			double overallTotalGrades = 0;
-			int overallTotalStudents = 0;
-
-			for (int classNum = 1; classNum <= numClasses; classNum++)
+			SimpleConsoleFunctions.ParseIntEC(out numberOfClasses);
+			
+			for (int classIndex = 1; classIndex <= numberOfClasses; classIndex++)
 			{
-				Console.WriteLine($"Class {classNum}:");
+				Console.WriteLine($"Class {classIndex}:");
+				Console.Write("Enter the number of students:");
+				SimpleConsoleFunctions.ParseIntEC(out numberOfStudents);
+				
+				CalculateClassGrade();
 
-				Console.Write("Enter the number of students: ");
-				int numStudents = int.Parse(Console.ReadLine());
-				int totalGrades = 0;
-
-				for (int student = 1; student <= numStudents; student++)
-				{
-					Console.Write($"Enter the grade for student {student}: ");
-					int grade = int.Parse(Console.ReadLine());
-					totalGrades += grade;
-				}
-
-				double classAverage = (double)totalGrades / numStudents;
-				overallTotalGrades += totalGrades;
-				overallTotalStudents += numStudents;
-
-				char classLetterGrade = CalculateLetterGrade(classAverage);
-
-				Console.WriteLine($"Class {classNum} Average Grade: {classAverage:F2}");
-				Console.WriteLine($"Class {classNum} Letter Grade: {classLetterGrade}");
-				Console.WriteLine();
+				Console.WriteLine($"Class {classIndex} Average Grade: {classGradeAverage:F2}");
+				Console.WriteLine($"Class {classIndex} Letter Grade: {classGradeLetter}");
+				SimpleConsoleFunctions.PrintBlank();
 			}
+			// school grade once all classes have been entered
+			schoolGradeAverage = CalculateAverageScore(numberOfStudentsTotal, schoolGradeTotal);
+			schoolGradeLetter = CalculateLetterGrade(schoolGradeAverage);
 
-			double overallAverage = (double)overallTotalGrades / overallTotalStudents;
-			char overallLetterGrade = CalculateLetterGrade(overallAverage);
-
-			Console.WriteLine($"Overall Average Grade: {overallAverage:F2}");
-			Console.WriteLine($"Overall Letter Grade: {overallLetterGrade}");
-
+			Console.WriteLine($"Overall Average Grade: {schoolGradeAverage:F2}");
+			Console.WriteLine($"Overall Letter Grade: {schoolGradeLetter}");
 			SimpleConsoleFunctions.ParseEndingInput();
 		}
+
+		private static void CalculateClassGrade()
+		{
+			// resetting totals upon entering function from start
+			classGradeTotal = 0;
+			numberOfStudents = 0;
+			
+			for (int studentIndex = 1; studentIndex <= numberOfStudents; studentIndex++)
+			{
+				int tempGrade;
+				Console.Write($"Enter the grade for student {studentIndex}: ");
+				SimpleConsoleFunctions.ParseIntEC(out tempGrade);
+				classGradeTotal += tempGrade;
+			}
+			// class grade once all student grades have been entered
+			classGradeAverage = CalculateAverageScore(numberOfStudents, classGradeTotal);
+			classGradeLetter = CalculateLetterGrade(classGradeAverage);
+			
+			// saving totals for school grade
+			schoolGradeTotal += classGradeTotal;
+			numberOfStudentsTotal += numberOfStudents;
+			
+		}
 		
-		// GPT generated code
+		private static double CalculateAverageScore(double studentCount, double totalScore)
+		{
+			return totalScore / studentCount;
+		}
+        
+		// GPT generated function
 		private static char CalculateLetterGrade(double average)
 		{
 			if (average >= 90 && average <= 100)
