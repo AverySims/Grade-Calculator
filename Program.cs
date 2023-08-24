@@ -4,76 +4,88 @@ namespace GradeCalculator
 {
 	internal class Program
 	{
-		private static int numberOfClasses;
-		private static int numberOfStudents;
-		private static int numberOfStudentsTotal;
-		
-		private static char classGradeLetter;
-		private static double classGradeTotal;
-		private static double classGradeAverage;
-
-		private static char schoolGradeLetter;
-		private static double schoolGradeTotal;
-		private static double schoolGradeAverage;
+		private static int classCount;
+		private static int studentCount;
+		private static int totalStudentCount;
+		private static double combinedGrade;
         
 		static void Main(string[] args)
 		{
-			Console.Write("Enter the number of classes: ");
-			SimpleConsoleFunctions.ParseIntEC(out numberOfClasses);
+			bool loopMain = true;
+			bool loopClassCount = true;
+			bool loopStudentCount = true;
 			
-			for (int classIndex = 1; classIndex <= numberOfClasses; classIndex++)
+			while (loopMain)
 			{
-				Console.WriteLine($"Class {classIndex}:");
-				Console.Write("Enter the number of students:");
-				SimpleConsoleFunctions.ParseIntEC(out numberOfStudents);
-				
-				CalculateClassGrade();
-
-				Console.WriteLine($"Class {classIndex} Average Grade: {classGradeAverage:F2}");
-				Console.WriteLine($"Class {classIndex} Letter Grade: {classGradeLetter}");
+				Console.Write("Enter the number of classes: ");
+				while (loopClassCount)
+				{
+					if (!SimpleConsoleFunctions.ParseIntEC(out classCount) || classCount < 1)
+						Console.WriteLine("Invalid number of classes");
+					else
+						loopClassCount = false;
+				}
 				SimpleConsoleFunctions.PrintBlank();
-			}
-			// school grade once all classes have been entered
-			schoolGradeAverage = CalculateAverageScore(numberOfStudentsTotal, schoolGradeTotal);
-			schoolGradeLetter = CalculateLetterGrade(schoolGradeAverage);
+			
+				for (int classIndex = 1; classIndex <= classCount; classIndex++)
+				{
+					Console.WriteLine($"Class {classIndex}:");
+					Console.Write("Enter the number of students: ");
+					while (loopStudentCount)
+					{
+						if (!SimpleConsoleFunctions.ParseIntEC(out studentCount) || studentCount < 1)
+							Console.WriteLine("Invalid number of students");
+						else
+							loopStudentCount = false;
+					}
+					SimpleConsoleFunctions.ParseIntEC(out studentCount);
+					
+					CalculateClassGrade(classIndex);
+				}
+				// school grade once all classes have been entered
+				double overallAverage = CalculateAverageScore(totalStudentCount, combinedGrade);
+				char overallLetter = CalculateLetterGrade(overallAverage);
 
-			Console.WriteLine($"Overall Average Grade: {schoolGradeAverage:F2}");
-			Console.WriteLine($"Overall Letter Grade: {schoolGradeLetter}");
-			SimpleConsoleFunctions.ParseEndingInput();
+				Console.WriteLine($"Overall average grade: {overallAverage:F2}");
+				Console.WriteLine($"Overall letter grade: {overallLetter}");
+				
+				SimpleConsoleFunctions.SelectEndingAction(out loopMain);
+			}
 		}
 
-		private static void CalculateClassGrade()
+		private static void CalculateClassGrade(int index)
 		{
-			// resetting totals upon entering function from start
-			classGradeTotal = 0;
-			numberOfStudents = 0;
+			// initializing local vars
+			double classAverage = 0;
+			char classLetter = 'F';
+			double classTotal = 0;
 			
-			for (int studentIndex = 1; studentIndex <= numberOfStudents; studentIndex++)
+			for (int studentIndex = 1; studentIndex <= studentCount; studentIndex++)
 			{
 				int tempGrade;
 				Console.Write($"Enter the grade for student {studentIndex}: ");
 				SimpleConsoleFunctions.ParseIntEC(out tempGrade);
-				classGradeTotal += tempGrade;
+				classTotal += tempGrade;
 			}
 			// class grade once all student grades have been entered
-			classGradeAverage = CalculateAverageScore(numberOfStudents, classGradeTotal);
-			classGradeLetter = CalculateLetterGrade(classGradeAverage);
+			classAverage = CalculateAverageScore(studentCount, classTotal);
+			classLetter = CalculateLetterGrade(classAverage);
 			
 			// saving totals for school grade
-			schoolGradeTotal += classGradeTotal;
-			numberOfStudentsTotal += numberOfStudents;
+			combinedGrade += classTotal;
+			totalStudentCount += studentCount;
 			
-		}
-		
-		private static double CalculateAverageScore(double studentCount, double totalScore)
-		{
-			return totalScore / studentCount;
+			Console.WriteLine($"Class {index} Average Grade: {classAverage:F2}");
+			Console.WriteLine($"Class {index} Letter Grade: {classLetter}");
+			SimpleConsoleFunctions.PrintBlank();
+			
 		}
         
 		// GPT generated function
 		private static char CalculateLetterGrade(double average)
 		{
-			if (average >= 90 && average <= 100)
+			//if (average >= 90 && average <= 100)
+			if (average >= 90)
 				return 'A';
 			else if (average >= 80)
 				return 'B';
@@ -85,5 +97,9 @@ namespace GradeCalculator
 				return 'F';
 		}
 		
+		private static double CalculateAverageScore(double studentCount, double totalScore)
+		{
+			return totalScore / studentCount;
+		}
 	}
 }
