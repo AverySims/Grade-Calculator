@@ -12,11 +12,12 @@ namespace GradeCalculator
 		static void Main(string[] args)
 		{
 			bool loopMain = true;
-			bool loopClassCount = true;
-			bool loopStudentCount = true;
+			
 			
 			while (loopMain)
 			{
+				bool loopClassCount = true;
+				
 				Console.Write("Enter the number of classes: ");
 				while (loopClassCount)
 				{
@@ -29,6 +30,8 @@ namespace GradeCalculator
 			
 				for (int classIndex = 1; classIndex <= classCount; classIndex++)
 				{
+					bool loopStudentCount = true;
+					
 					Console.WriteLine($"Class {classIndex}:");
 					Console.Write("Enter the number of students: ");
 					while (loopStudentCount)
@@ -38,7 +41,6 @@ namespace GradeCalculator
 						else
 							loopStudentCount = false;
 					}
-					SimpleConsoleFunctions.ParseIntEC(out studentCount);
 					
 					CalculateClassGrade(classIndex);
 				}
@@ -55,7 +57,7 @@ namespace GradeCalculator
 
 		private static void CalculateClassGrade(int index)
 		{
-			// initializing local vars
+			// initializing defaults for local vars
 			double classAverage = 0;
 			char classLetter = 'F';
 			double classTotal = 0;
@@ -75,8 +77,8 @@ namespace GradeCalculator
 			combinedGrade += classTotal;
 			totalStudentCount += studentCount;
 			
-			Console.WriteLine($"Class {index} Average Grade: {classAverage:F2}");
-			Console.WriteLine($"Class {index} Letter Grade: {classLetter}");
+			Console.WriteLine($"Class {index} Average Grade: {classLetter} {classAverage:F2}");
+			//Console.WriteLine($"Class {index} Letter Grade: {classLetter}");
 			SimpleConsoleFunctions.PrintBlank();
 			
 		}
