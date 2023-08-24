@@ -12,12 +12,12 @@ namespace GradeCalculator
 		static void Main(string[] args)
 		{
 			bool loopMain = true;
-			
-			
+            
 			while (loopMain)
 			{
 				bool loopClassCount = true;
 				
+				// reading input for number of classes
 				Console.Write("Enter the number of classes: ");
 				while (loopClassCount)
 				{
@@ -27,12 +27,14 @@ namespace GradeCalculator
 						loopClassCount = false;
 				}
 				SimpleConsoleFunctions.PrintBlank();
-			
+				
+				// loop to enter info for each class
 				for (int classIndex = 1; classIndex <= classCount; classIndex++)
 				{
 					bool loopStudentCount = true;
 					
 					Console.WriteLine($"Class {classIndex}:");
+					// reading input for number of students in current class
 					Console.Write("Enter the number of students: ");
 					while (loopStudentCount)
 					{
@@ -41,15 +43,13 @@ namespace GradeCalculator
 						else
 							loopStudentCount = false;
 					}
-					
 					CalculateClassGrade(classIndex);
 				}
-				// school grade once all classes have been entered
+				// school grade once all classes & students have been entered
 				double overallAverage = CalculateAverageScore(totalStudentCount, combinedGrade);
 				char overallLetter = CalculateLetterGrade(overallAverage);
 
-				Console.WriteLine($"Overall average grade: {overallAverage:F2}");
-				Console.WriteLine($"Overall letter grade: {overallLetter}");
+				Console.WriteLine($"Overall average grade: {overallLetter} {overallAverage:F2}");
 				
 				SimpleConsoleFunctions.SelectEndingAction(out loopMain);
 			}
@@ -73,14 +73,12 @@ namespace GradeCalculator
 			classAverage = CalculateAverageScore(studentCount, classTotal);
 			classLetter = CalculateLetterGrade(classAverage);
 			
-			// saving totals for school grade
+			// saving totals for overall grade
 			combinedGrade += classTotal;
 			totalStudentCount += studentCount;
 			
 			Console.WriteLine($"Class {index} Average Grade: {classLetter} {classAverage:F2}");
-			//Console.WriteLine($"Class {index} Letter Grade: {classLetter}");
 			SimpleConsoleFunctions.PrintBlank();
-			
 		}
         
 		// GPT generated function
