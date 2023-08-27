@@ -50,7 +50,7 @@ namespace GradeCalculator
 				}
 				else
 				{
-					Console.WriteLine("Invalid number of classes");
+					Console.Write("Please enter a valid number of classes: ");
 				}
 			} while (!loopValid);
 			
@@ -73,7 +73,7 @@ namespace GradeCalculator
 				}
 				else
 				{
-					Console.WriteLine("Invalid number of students");
+					Console.Write("Please enter a valid number of students: ");
 				}
 			} while (!loopValid);
 		}
