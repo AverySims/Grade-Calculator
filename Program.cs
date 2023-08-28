@@ -64,9 +64,9 @@ namespace GradeCalculator
 			
 			for (int studentIndex = 1; studentIndex <= studentCount; studentIndex++)
 			{
-				int tempGrade;
+				double tempGrade;
 				Console.Write($"Enter the grade for student {studentIndex}: ");
-				SimpleConsoleFunctions.ParseIntEC(out tempGrade);
+				SimpleConsoleFunctions.ParseDoubleEC(out tempGrade);
 				classTotal += tempGrade;
 			}
 			// class grade once all student grades have been entered
