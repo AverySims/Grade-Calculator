@@ -16,9 +16,9 @@ namespace GradeCalculator
 
 			while (loopMain)
 			{
-				GetClassCount();
+				SetClassCount();
 
-				GetStudentCountsAndCalculateGrades();
+				CalculateStudentGrades();
 
 				PrintOverallAverageGrade();
 
@@ -26,25 +26,18 @@ namespace GradeCalculator
 			}
 		}
 
-		private static void GetStudentCountsAndCalculateGrades()
-		{
-			for (int classIndex = 1; classIndex <= _classCount; classIndex++)
-			{
-				GetStudentCount(classIndex);
-				CalculateClassGrade(classIndex);
-			}
-		}
-
-		private static void GetClassCount()
+		private static void SetClassCount()
 		{
 			bool loopValid = false;
 			
+			// user input for number of classes
 			Console.Write("Enter the number of classes: ");
 			do
 			{
 				int tempCount = GenericReadLine.TryReadLine<int>();
 				if (tempCount >= 1)
 				{
+					// valid, continue program
 					_classCount = tempCount;
 					loopValid = true;
 				}
@@ -57,10 +50,11 @@ namespace GradeCalculator
 			ConsoleHelper.PrintBlank();
 		}
 		
-		private static void GetStudentCount(int classIndex)
+		private static void SetStudentCount(int classIndex)
 		{
 			bool loopValid = false;
 
+			// user input for number of students in selected class
 			Console.WriteLine($"Class {classIndex}:");
 			Console.Write("Enter the number of students: ");
 			do
@@ -68,6 +62,7 @@ namespace GradeCalculator
 				int tempCount = GenericReadLine.TryReadLine<int>();
 				if (tempCount >= 1)
 				{
+					// valid, continue program
 					_studentCount = tempCount;
 					loopValid = true;
 				}
@@ -76,6 +71,15 @@ namespace GradeCalculator
 					Console.Write("Please enter a valid number of students: ");
 				}
 			} while (!loopValid);
+		}
+
+		private static void CalculateStudentGrades()
+		{
+			for (int classIndex = 1; classIndex <= _classCount; classIndex++)
+			{
+				SetStudentCount(classIndex);
+				CalculateClassGrade(classIndex);
+			}
 		}
 
 		private static void CalculateClassGrade(int index)
@@ -92,8 +96,8 @@ namespace GradeCalculator
 				classTotal += tempGrade;
 			}
 
-			classAverage = CalculateAverageScore(_studentCount, classTotal);
-			classLetter = CalculateLetterGrade(classAverage);
+			classAverage = GetAverageScore(_studentCount, classTotal);
+			classLetter = GetLetterGrade(classAverage);
 
 			_combinedGrade += classTotal;
 			_totalStudentCount += _studentCount;
@@ -102,7 +106,7 @@ namespace GradeCalculator
 			ConsoleHelper.PrintBlank();
 		}
 
-		private static char CalculateLetterGrade(double average)
+		private static char GetLetterGrade(double average)
 		{
 			if (average >= 90)
 				return 'A';
@@ -116,15 +120,15 @@ namespace GradeCalculator
 				return 'F';
 		}
 
-		private static double CalculateAverageScore(double studentCount, double totalScore)
+		private static double GetAverageScore(double studentCount, double totalScore)
 		{
 			return totalScore / studentCount;
 		}
 
 		private static void PrintOverallAverageGrade()
 		{
-			double overallAverage = CalculateAverageScore(_totalStudentCount, _combinedGrade);
-			char overallLetter = CalculateLetterGrade(overallAverage);
+			double overallAverage = GetAverageScore(_totalStudentCount, _combinedGrade);
+			char overallLetter = GetLetterGrade(overallAverage);
 
 			Console.WriteLine($"Overall average grade: {overallLetter} {overallAverage:F2}");
 			ConsoleHelper.PrintBlank();
