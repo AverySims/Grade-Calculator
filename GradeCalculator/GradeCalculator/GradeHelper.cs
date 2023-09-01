@@ -8,15 +8,15 @@ public class GradeHelper
         {
             return 'A';
         }
-        else if (grade >= 80)
+        if (grade >= 80)
         {
             return 'B';
         }
-        else if (grade >= 70)
+        if (grade >= 70)
         {
             return 'C';
         }
-        else if (grade >= 60)
+        if (grade >= 60)
         {
             return 'D';
         }
