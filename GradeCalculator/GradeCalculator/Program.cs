@@ -99,8 +99,8 @@ namespace GradeCalculator
 				classTotal += tempGrade;
 			}
 
-			classAverage = GetAverageScore(_studentCount, classTotal);
-			classLetter = GetLetterGrade(classAverage);
+			classAverage = GradeHelper.GetAverageScore(_studentCount, classTotal);
+			classLetter = GradeHelper.ConvertGradeToLetter(classAverage);
 
 			_combinedGrade += classTotal;
 			_totalStudentCount += _studentCount;
@@ -109,29 +109,10 @@ namespace GradeCalculator
 			ConsoleHelper.PrintBlank();
 		}
 
-		private static char GetLetterGrade(double average)
-		{
-			if (average >= 90)
-				return 'A';
-			if (average >= 80)
-				return 'B';
-			if (average >= 70)
-				return 'C';
-			if (average >= 60)
-				return 'D';
-			else
-				return 'F';
-		}
-
-		private static double GetAverageScore(double studentCount, double totalScore)
-		{
-			return totalScore / studentCount;
-		}
-
 		private static void PrintOverallAverageGrade()
 		{
-			double overallAverage = GetAverageScore(_totalStudentCount, _combinedGrade);
-			char overallLetter = GetLetterGrade(overallAverage);
+			double overallAverage = GradeHelper.GetAverageScore(_totalStudentCount, _combinedGrade);
+			char overallLetter = GradeHelper.ConvertGradeToLetter(overallAverage);
 
 			Console.WriteLine($"Overall average grade: {overallLetter} {overallAverage:F2}");
 			ConsoleHelper.PrintBlank();
