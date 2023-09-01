@@ -5,16 +5,23 @@ namespace GradeCalculator
 {
 	internal class Program
 	{
+		// number of classes
 		private static int _classCount;
+		
+		// number of students in selected class
 		private static int _studentCount;
+		
+		// total number of students
 		private static int _totalStudentCount;
+		
+		// total grade of all students
 		private static double _combinedGrade;
-
+		
+		private static bool _loopMain = true;
+		
 		static void Main(string[] args)
 		{
-			bool loopMain = true;
-
-			while (loopMain)
+			while (_loopMain)
 			{
 				SetClassCount();
 
@@ -22,57 +29,32 @@ namespace GradeCalculator
 
 				PrintOverallAverageGrade();
 
-				ConsoleHelper.SelectEndingAction(out loopMain);
+				ConsoleHelper.SelectEndingAction(out _loopMain);
 			}
 		}
 
 		private static void SetClassCount()
 		{
-			bool loopValid = false;
-			
-			// user input for number of classes
 			Console.Write("Enter the number of classes: ");
-			do
+			while (true)
 			{
+				// user input for number of classes
 				int tempCount = GenericReadLine.TryReadLine<int>();
-				if (tempCount >= 1)
-				{
-					// valid, continue program
-					_classCount = tempCount;
-					loopValid = true;
-				}
-				else
+				if (tempCount < 1)
 				{
 					Console.Write("Please enter a valid number of classes: ");
 				}
-			} while (!loopValid);
+				else
+				{
+					// valid, break loop and continue program
+					_classCount = tempCount;
+					break;
+				}
+			}
 			
 			ConsoleHelper.PrintBlank();
 		}
 		
-		private static void SetStudentCount(int classIndex)
-		{
-			bool loopValid = false;
-
-			// user input for number of students in selected class
-			Console.WriteLine($"Class {classIndex}:");
-			Console.Write("Enter the number of students: ");
-			do
-			{
-				int tempCount = GenericReadLine.TryReadLine<int>();
-				if (tempCount >= 1)
-				{
-					// valid, continue program
-					_studentCount = tempCount;
-					loopValid = true;
-				}
-				else
-				{
-					Console.Write("Please enter a valid number of students: ");
-				}
-			} while (!loopValid);
-		}
-
 		private static void CalculateStudentGrades()
 		{
 			for (int classIndex = 1; classIndex <= _classCount; classIndex++)
@@ -81,7 +63,28 @@ namespace GradeCalculator
 				CalculateClassGrade(classIndex);
 			}
 		}
-
+		
+		private static void SetStudentCount(int classIndex)
+		{
+			Console.WriteLine($"Class {classIndex}:");
+			Console.Write("Enter the number of students: ");
+			while (true)
+			{
+				// user input for number of students in selected class
+				int tempCount = GenericReadLine.TryReadLine<int>();
+				if (tempCount < 1)
+				{
+					Console.Write("Please enter a valid number of students: ");
+				}
+				else
+				{
+					// valid, break loop and continue program
+					_studentCount = tempCount;
+					break;
+				}
+			}
+		}
+		
 		private static void CalculateClassGrade(int index)
 		{
 			double classAverage = 0;
